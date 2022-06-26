@@ -204,56 +204,53 @@ void odczytDanychZPlikuUzytkownicy(vector <Uzytkownik> &Users) {
     }
     plik.close();
 }
-DanePrzyjaciela utworzObiektAdresat (string liniaZDanymiAdresata)
-{
-     DanePrzyjaciela Adresat;
-     string daneDoZapisu = "";
-     int nr_danych = 1;
-     for(int i=0; i<liniaZDanymiAdresata.length(); i++){
-                while (liniaZDanymiAdresata[i] != '|') {
-                daneDoZapisu += liniaZDanymiAdresata[i];
-                i++;
+DanePrzyjaciela utworzObiektAdresat (string liniaZDanymiAdresata) {
+    DanePrzyjaciela Adresat;
+    string daneDoZapisu = "";
+    int nr_danych = 1;
+    for(int i=0; i<liniaZDanymiAdresata.length(); i++) {
+        while (liniaZDanymiAdresata[i] != '|') {
+            daneDoZapisu += liniaZDanymiAdresata[i];
+            i++;
 
-            }
-            switch(nr_danych) {
-            case 1:
-                Adresat.idAdresata=atoi(daneDoZapisu.c_str());
-                break;
-            case 2:
-                Adresat.idUzytkownika=atoi(daneDoZapisu.c_str());
-            case 3:
-                Adresat.imie=daneDoZapisu;
-                break;
-            case 4:
-                Adresat.nazwisko=daneDoZapisu;
-                break;
-            case 5:
-                Adresat.nrTelefonu=daneDoZapisu;
-                break;
-            case 6:
-                Adresat.email=daneDoZapisu;
-                break;
-            case 7:
-                Adresat.adres=daneDoZapisu;
-                break;
+        }
+        switch(nr_danych) {
+        case 1:
+            Adresat.idAdresata=atoi(daneDoZapisu.c_str());
+            break;
+        case 2:
+            Adresat.idUzytkownika=atoi(daneDoZapisu.c_str());
+        case 3:
+            Adresat.imie=daneDoZapisu;
+            break;
+        case 4:
+            Adresat.nazwisko=daneDoZapisu;
+            break;
+        case 5:
+            Adresat.nrTelefonu=daneDoZapisu;
+            break;
+        case 6:
+            Adresat.email=daneDoZapisu;
+            break;
+        case 7:
+            Adresat.adres=daneDoZapisu;
+            break;
 
-            }
+        }
 
-            nr_danych++;
-            daneDoZapisu = "";
-            }
+        nr_danych++;
+        daneDoZapisu = "";
+    }
 
-            return Adresat;
+    return Adresat;
 }
 
-string utworzLinieDoZapisu (vector <DanePrzyjaciela> &Przyjaciele, int idDoEdycji)
-{
+string utworzLinieDoZapisu (vector <DanePrzyjaciela> &Przyjaciele, int idDoEdycji) {
     string liniaZEdytowanymiDanymiAdresata = "";
     for (vector<DanePrzyjaciela>::iterator itr = Przyjaciele.begin(); itr != Przyjaciele.end(); itr++) {
 
 
-            if (itr->idAdresata == idDoEdycji)
-            {
+        if (itr->idAdresata == idDoEdycji) {
             liniaZEdytowanymiDanymiAdresata += konwerjsaIntNaString(itr->idAdresata) + '|';
             liniaZEdytowanymiDanymiAdresata += konwerjsaIntNaString(itr->idUzytkownika) + '|';
             liniaZEdytowanymiDanymiAdresata += itr->imie + '|';
@@ -262,11 +259,11 @@ string utworzLinieDoZapisu (vector <DanePrzyjaciela> &Przyjaciele, int idDoEdycj
             liniaZEdytowanymiDanymiAdresata += itr->email + '|';
             liniaZEdytowanymiDanymiAdresata += itr->adres + '|';
 
-}
+        }
     }
 
-return liniaZEdytowanymiDanymiAdresata;
-    }
+    return liniaZEdytowanymiDanymiAdresata;
+}
 
 
 
@@ -279,34 +276,29 @@ void zapiszWszystkichAdresatowDoPlikuTekstowego(vector<DanePrzyjaciela> &Przyjac
     plik.open("wizytowki.txt", ios::in);
     tymczasowy.open("wizytowki_tymczasowy.txt", ios::out | ios::app);
     if (plik.good()) {
-        while (getline(plik, liniaZDanymiAdresata))
-        {
+        while (getline(plik, liniaZDanymiAdresata)) {
             Adresat = utworzObiektAdresat (liniaZDanymiAdresata);
 
-            if (Adresat.idAdresata == idDoEdycji)
-            {
+            if (Adresat.idAdresata == idDoEdycji) {
                 liniaZDanymiAdresata = utworzLinieDoZapisu (Przyjaciele, idDoEdycji);
                 tymczasowy << liniaZDanymiAdresata <<endl;
 
 
-            }
-            else
-            {
+            } else {
                 tymczasowy << liniaZDanymiAdresata << endl;
 
 
             }
         }
-    }
-        else {
+    } else {
         cout << "Nie mozna otworzyc pliku wizytowki.txt" << endl;
     }
 
 
-        plik.close();
-        tymczasowy.close();
-        remove("wizytowki.txt");
-        rename("wizytowki_tymczasowy.txt", "wizytowki.txt");
+    plik.close();
+    tymczasowy.close();
+    remove("wizytowki.txt");
+    rename("wizytowki_tymczasowy.txt", "wizytowki.txt");
 
 }
 void zapiszWszystkichAdresatowDoPlikuTekstowegoUsuwanie(vector<DanePrzyjaciela> &Przyjaciele, int idDoUsuniecia) {
@@ -318,52 +310,47 @@ void zapiszWszystkichAdresatowDoPlikuTekstowegoUsuwanie(vector<DanePrzyjaciela> 
     plik.open("wizytowki.txt", ios::in);
     tymczasowy.open("wizytowki_tymczasowy.txt", ios::out | ios::app);
     if (plik.good()) {
-        while (getline(plik, liniaZDanymiAdresata))
-        {
+        while (getline(plik, liniaZDanymiAdresata)) {
             Adresat = utworzObiektAdresat (liniaZDanymiAdresata);
 
-            if (Adresat.idAdresata != idDoUsuniecia)
-            {
+            if (Adresat.idAdresata != idDoUsuniecia) {
                 tymczasowy << liniaZDanymiAdresata << endl;
 
             }
 
         }
-    }
-        else {
+    } else {
         cout << "Nie mozna otworzyc pliku wizytowki.txt" << endl;
     }
 
 
-        plik.close();
-        tymczasowy.close();
-        remove("wizytowki.txt");
-        rename("wizytowki_tymczasowy.txt", "wizytowki.txt");
+    plik.close();
+    tymczasowy.close();
+    remove("wizytowki.txt");
+    rename("wizytowki_tymczasowy.txt", "wizytowki.txt");
 
 }
 
-int szukajIdOstatniegoPrzyjaciela ()
-{
+int szukajIdOstatniegoPrzyjaciela () {
     fstream plik;
     string liniaZDanymiAdresata = "";
     string idOstatniegoAdresataWPliku = "";
     string idDoZwrocenia;
     plik.open("wizytowki.txt", ios::in);
     if (plik.good()) {
-        while (getline(plik, liniaZDanymiAdresata))
-         {
-             for (int i=0; i<liniaZDanymiAdresata.length(); i++){
-             while (liniaZDanymiAdresata[i] != '|') {
-                idOstatniegoAdresataWPliku += liniaZDanymiAdresata[i];
-                i++;
+        while (getline(plik, liniaZDanymiAdresata)) {
+            for (int i=0; i<liniaZDanymiAdresata.length(); i++) {
+                while (liniaZDanymiAdresata[i] != '|') {
+                    idOstatniegoAdresataWPliku += liniaZDanymiAdresata[i];
+                    i++;
 
-             }
-             break;
-             }
-             idDoZwrocenia = idOstatniegoAdresataWPliku;
-             idOstatniegoAdresataWPliku = "";
+                }
+                break;
+            }
+            idDoZwrocenia = idOstatniegoAdresataWPliku;
+            idOstatniegoAdresataWPliku = "";
 
-         }
+        }
     }
 
     else cout << "Nie mozna otworzyc pliku wizytowki.txt" << endl;
@@ -375,7 +362,6 @@ int szukajIdOstatniegoPrzyjaciela ()
 }
 void wczytywanieDanychPrzyjaciela(vector <DanePrzyjaciela> &Przyjaciele, int idZalogowanegoUzytkownika) {
 
-    int idOstatniegoPrzyjaciela = 0;
     DanePrzyjaciela Adresat;
 
     system("cls");
@@ -392,10 +378,6 @@ void wczytywanieDanychPrzyjaciela(vector <DanePrzyjaciela> &Przyjaciele, int idZ
     cin.sync();
     getline(cin, Adresat.adres);
     cout << endl;
-
-    if (Przyjaciele.size() != 0) {
-        idOstatniegoPrzyjaciela = Przyjaciele[Przyjaciele.size()-1].idAdresata;
-    }
 
     Adresat.idAdresata = szukajIdOstatniegoPrzyjaciela()+1;
     Adresat.idUzytkownika = idZalogowanegoUzytkownika;
@@ -525,9 +507,8 @@ void odczytDanychZPliku( vector <DanePrzyjaciela> & Przyjaciele, int idZalogowan
 
 
         }
-        if (Adresat.idUzytkownika == idZalogowanegoUzytkownika)
-        {
-        Przyjaciele.push_back(Adresat);
+        if (Adresat.idUzytkownika == idZalogowanegoUzytkownika) {
+            Przyjaciele.push_back(Adresat);
         }
         nr_danych = 1;
 
